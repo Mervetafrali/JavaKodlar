@@ -1,0 +1,158 @@
+= Java Örnek Uygulamalar 
+
+-> Asgari Ücret Hesaplayan Program
+
+[source,java]
+---------------------------------------------------------------------
+
+package asgariucretd;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+public class aud extends JFrame {
+	private JTextField deger1;
+	private JTextField deger2;
+	private JTextField deger3;
+	private JTextField deger4;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					aud frame = new aud();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public aud() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 523, 348);
+		getContentPane().setLayout(null);
+		
+		JLabel lblAsgariUcretGiriniz = new JLabel("Asgari Ucret Giriniz:");
+		lblAsgariUcretGiriniz.setBounds(12, 16, 122, 16);
+		getContentPane().add(lblAsgariUcretGiriniz);
+		
+		deger1 = new JTextField();
+		deger1.setBounds(195, 13, 116, 22);
+		getContentPane().add(deger1);
+		deger1.setColumns(10);
+		
+		deger2 = new JTextField();
+		deger2.setBounds(195, 58, 116, 22);
+		getContentPane().add(deger2);
+		deger2.setColumns(10);
+		
+		JLabel lblGelirVergisiOran = new JLabel("Gelir Vergisi Oran\u0131:");
+		lblGelirVergisiOran.setBounds(12, 61, 122, 16);
+		getContentPane().add(lblGelirVergisiOran);
+		
+		JLabel lblAsgariGecimIndirimi = new JLabel("Asgari Gecim \u0130ndirimi:");
+		lblAsgariGecimIndirimi.setBounds(12, 102, 122, 16);
+		getContentPane().add(lblAsgariGecimIndirimi);
+		
+		JLabel lblSakatlkOranGirin = new JLabel("Sakatl\u0131k Oran\u0131 Girin:");
+		lblSakatlkOranGirin.setBounds(12, 143, 122, 16);
+		getContentPane().add(lblSakatlkOranGirin);
+		
+		deger3 = new JTextField();
+		deger3.setColumns(10);
+		deger3.setBounds(195, 99, 116, 22);
+		getContentPane().add(deger3);
+		
+		deger4 = new JTextField();
+		deger4.setColumns(10);
+		deger4.setBounds(195, 140, 116, 22);
+		getContentPane().add(deger4);
+		
+		JButton btnNewButton = new JButton("G\u00F6nder");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				//String glr_vr,agi,skto;
+				//String asg_ucr;
+				/*asg_ucr=deger1.getText();
+				//JOptionPane.showConfirmDialog(null, "Asgari Ücret:"+asg_ucr);
+				glr_vr=deger2.getText();				
+				//JOptionPane.showConfirmDialog(null, "Gelir Vergisi:"+glr_vr);
+				agi=deger3.getText();
+				//JOptionPane.showConfirmDialog(null, "Asgari Geçim İndirimi:"+agi);
+				skto=deger4.getText();
+				//JOptionPane.showConfirmDialog(null, "Sakatlık oranı:"+skto);*/
+                float asgariucret=Float.parseFloat(deger1.getText());
+                float gelirvergisiorani=Float.parseFloat(deger2.getText());
+                if(gelirvergisiorani!=15 && gelirvergisiorani!=20 && gelirvergisiorani!=27 && gelirvergisiorani!=35){
+                	JOptionPane.showMessageDialog(null, "Hatalı Giriş(Gelir Vergisi):");
+                	deger2.requestFocus();
+                	return;
+                }
+                float asgarigecimindirimi=Float.parseFloat(deger3.getText());
+                float sakatlikorani=Float.parseFloat(deger4.getText());         
+                float sgkprim=(float)(asgariucret*0.14);
+                float issizliksigortafonu=(float)(asgariucret*0.01);
+                float gelirvergisi=(float)((asgariucret-sgkprim-issizliksigortafonu)*gelirvergisiorani/100-asgarigecimindirimi);
+                float damgavergisi=(float)(asgariucret*0.00759);
+                float kesintilertoplamı=(float)(sgkprim+issizliksigortafonu+gelirvergisiorani+damgavergisi);
+                float netasgeriucret=(float)(asgariucret-kesintilertoplamı);
+                float isverensigortaprimi=(float)(((asgariucret*15.5)/100));
+                float isverenisizliksf=(float)(asgariucret*0.02);
+                float isverentopmal=(float)(asgariucret+isverensigortaprimi+isverenisizliksf);              
+                String temp;
+                temp= String.valueOf(sgkprim);
+                JOptionPane.showConfirmDialog(null, "SGK Primi:"+temp);
+                temp= String.valueOf(issizliksigortafonu);
+                JOptionPane.showConfirmDialog(null, "İşsizlik Sigorta Fonu:"+temp);
+                temp= String.valueOf(gelirvergisi);
+                JOptionPane.showConfirmDialog(null, "Gelir Vergisi:"+temp);
+                temp= String.valueOf(damgavergisi);
+                JOptionPane.showConfirmDialog(null, "Damga Vergisi:"+temp);
+                temp= String.valueOf(kesintilertoplamı);
+                JOptionPane.showConfirmDialog(null, "Kesintiler Toplamı:"+temp);
+                temp= String.valueOf(netasgeriucret);
+                JOptionPane.showConfirmDialog(null, "Net Asgari Ücret:"+temp);
+                temp= String.valueOf(isverensigortaprimi);
+                JOptionPane.showConfirmDialog(null, "İşveren SGK Primi:"+temp);
+                temp= String.valueOf(isverenisizliksf);
+                JOptionPane.showConfirmDialog(null, "İşveren İşsizlik Sigorta Fonu:"+temp);
+                temp= String.valueOf(isverentopmal);
+                JOptionPane.showConfirmDialog(null, "İşverene Toplam Maliyet:"+temp);
+
+				
+				
+			}
+		});
+		btnNewButton.setBounds(225, 202, 97, 25);
+		getContentPane().add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Temizle");
+		btnNewButton_1.setBounds(112, 202, 97, 25);
+		getContentPane().add(btnNewButton_1);
+	}
+
+	public JTextField getTextField() {
+		return deger1;
+	}
+}
+
+---------------------------------------------------------------------
